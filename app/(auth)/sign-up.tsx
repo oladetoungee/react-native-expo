@@ -5,12 +5,14 @@ import { images } from '@/constants';
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
 import { Link } from 'expo-router';
+import {createUser} from '@/lib/appwrite'
 
 const SignUp: React.FC = () => {
     const [form, setForm] = useState({username: '', email: '', password: '' });
 
     const handleSignUp = () => {
       console.log('form:', form);
+      createUser()
     };
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
