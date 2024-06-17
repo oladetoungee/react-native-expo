@@ -5,12 +5,15 @@ import { images } from '@/constants';
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
 import { Link } from 'expo-router';
+import { signIn } from '@/lib/appwrite';
 
 const SignIn: React.FC = () => {
     const [form, setForm] = useState({ email: '', password: '' });
 
     const handleSignIn = () => {
       console.log('form:', form);
+        signIn(form.email, form.password);
+        console.log('signed IN:', form.email);
     };
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
