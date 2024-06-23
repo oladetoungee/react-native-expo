@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import "@/global.css"
+import GlobalProvider from '@/context/GlobalProvider';
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -26,8 +27,8 @@ useEffect(() => {
 , [fontsLoaded, error]);
 if (!fontsLoaded && !error) return null;
   return (
-  
-      <Stack >
+    <GlobalProvider>
+  <Stack >
         <Stack.Screen name="index" options={{ headerShown: false }} />
 <Stack.Screen name="(auth)/sign-in" options={{ headerShown: false }} />
 <Stack.Screen name="(auth)/sign-up" options={{ headerShown: false }} />
@@ -35,6 +36,9 @@ if (!fontsLoaded && !error) return null;
 {/* <Stack.Screen name="(tabs)/home" options={{ headerShown: false }} />
 <Stack.Screen name="(tabs)/profile" options={{ headerShown: false }} /> */}
       </Stack>
+    </GlobalProvider>
+  
+    
 
   );
 }

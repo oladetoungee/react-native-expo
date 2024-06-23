@@ -4,17 +4,30 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '@/constants';
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import {createUser}  from '@/lib/appwrite';
 
 const SignUp: React.FC = () => {
     const [form, setForm] = useState({username: '', email: '', password: '' });
-
-    const handleSignUp = () => {
-      console.log('form:', form);
-      createUser(form.email, form.password, form.username);
-    };
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const handleSignUp = () => {
+      if(!form.username || !form.email || !form.password) {
+        console.log('Please fill in all fields');
+      }
+      setIsSubmitting(true);
+      try {
+        createUser(form.email, form.password, form.username);
+        router.push('/home');
+      } catch (error) {
+        
+      }
+      finally {
+        setIsSubmitting(false);
+      }
+     
+ 
+    };
+   
 
     return (
         <SafeAreaView className='bg-black h-full'>
