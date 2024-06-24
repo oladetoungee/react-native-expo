@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import Reaxt from 'react';
+import React from 'react';
 
 const BookMark = () => {
     return (
