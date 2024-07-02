@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { Client, Account, ID, Avatars , Databases, Permission, Role} from 'react-native-appwrite';
+import { Client, Account, ID, Avatars , Databases, Permission, Role, Query} from 'react-native-appwrite';
 
 
 export const config = {
@@ -52,7 +52,7 @@ promise.then(function (response) {
     console.log(error);
 });
 
-export const createUser = async (email, username, password) => {
+export const createUser = async (email: any, username: any, password: any) => {
     // Register User
   try {
     const newAccount = await account.create(
@@ -78,7 +78,7 @@ const newUser = await databases.createDocument(
   }
 }
 
-export const signIn = async (email, password) => {
+export const signIn = async (email: string, password: string) => {
     // Login User
   try {
     const session = await account.createSession(email, password);
@@ -109,15 +109,24 @@ export const getCurrentUser = async () => {
 
 
 export const getAllPosts = async () => {
-    // Get All Posts
     try {
-        const posts = await databases.listDocuments(
-           databaseId,
-           videoCollectionId,
-        );
-        if (!posts) throw Error
-        return posts;
+        const posts = await databases.listDocuments(databaseId, videoCollectionId);
+        if (!posts) throw new Error('No posts found');
+        
+        // Assuming posts contain an array of documents
+        const documents = posts.documents.map((doc: any) => ({
+            $id: doc.$id,
+            title: doc.title,
+            thumbnail: doc.thumbnail,
+            prompt: doc.prompt,
+            video: doc.video,
+            $createdAt: doc.$createdAt,
+            $updatedAt: doc.$updatedAt,
+        }));
+
+        return { documents };
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        return { documents: [] }; // Return empty array or handle error state
     }
-}
+};
