@@ -17,7 +17,7 @@ const SignUp: React.FC = () => {
       setIsSubmitting(true);
       try {
         createUser(form.email, form.password, form.username);
-        router.push('/home');
+        // router.push('/home');
       } catch (error) {
         
       }
