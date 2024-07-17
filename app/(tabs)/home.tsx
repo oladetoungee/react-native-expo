@@ -7,6 +7,7 @@ import Trending from '@/components/Trending';
 import EmptyState from '@/components/EmptyState';
 import { getAllPosts } from '@/lib/appwrite';
 import useAppWrite from '@/lib/useAppWrite';
+import VideoCard from '@/components/VideoCard';
 
 type Post = {
     $id: string;
@@ -16,6 +17,11 @@ type Post = {
     video: string;
     $createdAt: string;
     $updatedAt: string;
+    creator: {
+        $id: string;
+        name: string;
+        avatar: string;
+    };
 };
 
 type PostsData = {
@@ -34,36 +40,20 @@ const Home = () => {
     };
 
     useEffect(() => {
-        console.log('Posts:', data); // Log posts to check if data is correct
+        reFetch();
     }, [data]);
 
-    const renderItem = ({ item }: { item: Post }) => (
-        <TouchableOpacity style={styles.card} onPress={() => console.log('Navigate to post', item.video)}>
-            <Image source={{ uri: item.thumbnail }} style={styles.thumbnail} />
-            <View style={styles.textContainer}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.prompt}>{item.prompt}</Text>
-            </View>
-        </TouchableOpacity>
-    );
+
 
     return (
-        // <View style={styles.container}>
-        //     <FlatList
-        //         data={data?.documents || []}
-        //         renderItem={renderItem}
-        //         keyExtractor={(item) => item.$id}
-        //         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        //         ListEmptyComponent={data && data.documents.length === 0 ? <EmptyState title='No posts available' subtitle='Please check back later.' /> : null}
-        //     />
-        // </View>
+       
 
         <View className='bg-black h-full text-white'>
         <FlatList
           data={data?.documents || []}
             keyExtractor={(item) => item.title}
             renderItem={({ item }) => (
-                <Text className='text-3xl text-white'>{item.title}</Text>
+            <VideoCard video={item} />
             )}
             ListHeaderComponent={() => (
                 <View className='my-6 px-4 space-y-6'>
@@ -104,42 +94,6 @@ const Home = () => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-    },
-    card: {
-        flexDirection: 'row',
-        marginBottom: 16,
-        borderRadius: 8,
-        backgroundColor: '#fff',
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        shadowOffset: { width: 0, height: 4 },
-        elevation: 5,
-    },
-    thumbnail: {
-        width: 100,
-        height: 100,
-        borderTopLeftRadius: 8,
-        borderBottomLeftRadius: 8,
-    },
-    textContainer: {
-        flex: 1,
-        padding: 8,
-        justifyContent: 'center',
-    },
-    title: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 4,
-    },
-    prompt: {
-        fontSize: 14,
-        color: '#666',
-    },
-});
+
 
 export default Home;
